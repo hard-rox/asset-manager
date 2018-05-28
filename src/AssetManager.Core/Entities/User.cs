@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AssetManager.Core.Entities
 {
-    public class User
+    public class User:IdentityUser
     {
-        public string Email { get; set; }
-
-        public string Password { get; set; }
-
         public string Permissions { get; set; }
 
         public bool Activated { get; set; }
@@ -54,8 +46,6 @@ namespace AssetManager.Core.Entities
         public int ManagerId { get; set; }
         public virtual User Users { get; set; }
 
-        public string UserName { get; set; }
-
         public string Notes { get; set; }
 
         [ForeignKey("CompanyId")]
@@ -87,6 +77,5 @@ namespace AssetManager.Core.Entities
         public string State { get; set; }
 
         public string Zip { get; set; }
-
     }
 }

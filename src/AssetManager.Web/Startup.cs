@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AssetManager.Core.Entities;
 using AssetManager.Core.Interfaces;
 using AssetManager.Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +22,21 @@ namespace AssetManager.Web
         }
 
         public IConfiguration Configuration { get; }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<AssetManagerContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<AssetManagerContext>()
+                .AddDefaultTokenProviders();
+
+            // Add application services.
+            //services.AddTransient<IEmailSender, EmailSender>();
+
+            services.AddMvc();
+        }
 
         // This method gets called when Development Environment is used
         // Use this method to set Development services, like Development database
@@ -55,13 +72,13 @@ namespace AssetManager.Web
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
+        //public void ConfigureServices(IServiceCollection services)
+        //{
+        //    services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
-            services.AddMvc();
+        //    services.AddMvc();
 
-        }
+        //}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
